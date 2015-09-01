@@ -1,4 +1,4 @@
-# Scala Implicits - Type Classes Here I Come
+## Type Classes
 
 Scala implementation of example Type Classes.
 
