@@ -23,6 +23,7 @@ object LabelMaker {
       def label = F.toLabel(self)
     }
 
+    import scala.language.implicitConversions
     implicit def withLabelOps[A](tpe: A)(implicit ev: LabelMaker[A]) =
       new LabelOps[A] {
         def self = tpe
