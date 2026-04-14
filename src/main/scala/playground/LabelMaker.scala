@@ -8,25 +8,19 @@ trait LabelMaker[T] {
 
 // Defines a companion object with implicit implementations
 object LabelMaker {
-  implicit object AddressLabelMaker extends LabelMaker[Address] {
-    def toLabel(address: Address): String = {
-      import address._
-      "%d %s, %s, %s - %s".format(no, street, city, state, zip)
-    }
-  }
 
   // Defines ad-hoc polymorphic operations employing the type-class
   object ops {
     trait LabelOps[F] {
       def self: F
       implicit def F: LabelMaker[F]
-      def label = F.toLabel(self)
+      def label: String = F.toLabel(self)
     }
 
     import scala.language.implicitConversions
-    implicit def withLabelOps[A](tpe: A)(implicit ev: LabelMaker[A]) =
+    implicit def withLabelOps[A](tpe: A)(implicit ev: LabelMaker[A]): LabelOps[A] =
       new LabelOps[A] {
-        def self = tpe
+        def self: A = tpe
         implicit def F: LabelMaker[A] = ev
       }
   }
